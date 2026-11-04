@@ -11,24 +11,50 @@ func ProviderRequest( response http.ResponseWriter, request *http.Request){
 	// Intercept the dynamic route
 	identity_provider := strings.ToLower(chi.URLParam(request, "name"))
 	// Route based on identity provider
-	if identity_provider == "google" {
-		GoogleRequestIdentityHandler(response, request)
-		return
-	} else if (identity_provider == "github") {
-		GithubRequestIdentityHandler(response, request)
-		return
-	}
+	switch identity_provider {
+		case "google":
+			GoogleRequestIdentityHandler(
+				response,
+				request,
+			)
+
+		case "github":
+			GithubRequestIdentityHandler(
+				response,
+				request,
+			)
+
+		default:
+			http.Error(
+				response,
+				"Unknown provider",
+				http.StatusBadRequest,
+			)
+		}
 }
 func ProviderConfirm(response http.ResponseWriter, request *http.Request){
 	// Intercept the dynamic route
 	identity_provider := strings.ToLower(chi.URLParam(request, "name"))
 	// Route based on identity provider
-	if identity_provider == "google"{
-		GoogleConfirmIdentityHandler(response, request)
-		return
-	}else if identity_provider == "gihub" {
-		GithubConfirmIdentityHandler(response, request)
-		return
+	switch identity_provider {
+		case "google":
+			GoogleConfirmIdentityHandler(
+				response,
+				request,
+			)
+
+		case "github":
+			GithubConfirmIdentityHandler(
+				response,
+				request,
+			)
+
+		default:
+			http.Error(
+				response,
+				"Unknown provider",
+				http.StatusBadRequest,
+			)
 	}
 }
 
