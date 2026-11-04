@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"strings"
 	"net/http"
+	"strings"
+
 	"github.com/go-chi/chi/v5"
 )
 
@@ -62,8 +63,8 @@ func ProviderConfirm(response http.ResponseWriter, request *http.Request){
 func MainHandler() http.Handler {
 	api_router := chi.NewRouter()
 	//GET is for requesting identity
-	api_router.Get("/provider/{name}", ProviderRequest)
+	api_router.Get("/provider/{name}/request", ProviderRequest)
 	//POST Method is dedicated for confirming identity
-	api_router.Post("/provider/{name}", ProviderConfirm)
+	api_router.Get("/provider/{name}/confirm", ProviderConfirm)
 	return api_router
 }
