@@ -1,18 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"github.com/keagilekeamogetswe/federated-identities/handlers"
 )
-// Homehandler will be removed the only routes that will be server are api/*
-func APIHandler (res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(res, "Hello world")
-}
+
 
 func main(){
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api/", APIHandler)
+	mux.HandleFunc("/api/", handlers.APIHandler)
 
 	//The server
 	server := http.Server{
