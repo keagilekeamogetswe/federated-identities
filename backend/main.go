@@ -8,13 +8,10 @@ import (
 
 
 func main(){
-	mux := http.NewServeMux()
-	mux.HandleFunc("/api/", handlers.APIHandler)
-
 	//The server
 	server := http.Server{
 		Addr: ":8080",
-		Handler: mux,
+		Handler: handlers.MainHandler(),
 	}
 	log.Println("Server listening...")
 	// Since I am just starting out with go I'm avoiding error handling to keep things simple.
