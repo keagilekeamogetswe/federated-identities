@@ -1,0 +1,49 @@
+name: Go Backend Workflow
+
+on:
+  push:
+    branches: [ "main", "test-ci" ]
+  pull_request:
+    branches: [ "main", "test-ci" ]
+
+jobs:
+  build-and-test:
+    name: Build, Run Server and Test Endpoints
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install Go Dependencies
+        run: go mod download
+        working-directory: ./backend
+
+      - name: Build Application
+        run: go build -o main main.go
+        working-directory: ./backend
+
+      - name: Run HTTP Server in Background
+        run: |
+          ./main & 
+          SERVER_PID=$!
+          sleep 3
+        working-directory: ./backend
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node Dependencies
+        run: npm ci
+        working-directory: ./test
+
+      - name: Run Endpoint Tests
+        run: npm run test
+        working-directory: ./test
