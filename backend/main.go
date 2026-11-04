@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 // Homehandler will be removed the only routes that will be server are api/*
-func HomeHandler (res http.ResponseWriter, req *http.Request) {
+func APIHandler (res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(res, "Hello world")
 }
 
 func main(){
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", HomeHandler)
+	mux.HandleFunc("/api/", APIHandler)
 
 	//The server
 	server := http.Server{
