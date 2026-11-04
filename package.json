@@ -1,0 +1,26 @@
+{
+  "name": "federated-id",
+  "version": "1.0.0",
+  "description": "Only using javascript on this project strictly for testing.",
+  "homepage": "https://github.com/keagilekeamogetswe/federated-identities#readme",
+  "bugs": {
+    "url": "https://github.com/keagilekeamogetswe/federated-identities/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keagilekeamogetswe/federated-identities.git"
+  },
+  "license": "ISC",
+  "author": "Keamogetswe Keagile",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^5.1.0"
+  }
+}
