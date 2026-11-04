@@ -11,6 +11,8 @@ jobs:
     name: Build, Run Server and Test Endpoints
     runs-on: ubuntu-latest
 
+    environment: secrets
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,6 +36,11 @@ jobs:
           SERVER_PID=$!
           sleep 3
         working-directory: ./backend
+        env:
+          GOOGLE_CLIENT: ${{ secrets.GOOGLE_CLIENT }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URL: ${{ secrets.GOOGLE_REDIRECT_URL }}
+          GOOGLE_CLIENT_NAME: ${{ secrets.GOOGLE_CLIENT_NAME }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
