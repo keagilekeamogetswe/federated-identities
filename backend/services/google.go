@@ -1,11 +1,17 @@
 package services
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"net/url"
 	"os"
+
+	"google.golang.org/api/idtoken"
 )
 
 // TokenResponse maps the payload returned by Google's token endpoint
@@ -43,4 +49,50 @@ func RequestGoogleAuthURL(state string) string {
 	params.Set("prompt", "consent")
 
 	return "https://accounts.google.com/o/oauth2/v2/auth?" + params.Encode()
+}
+
+// DirectServerConfirmation executes the back-channel POST request to exchange
+// the authorization code for access and ID tokens.
+func DirectServerConfirmation(code string) (*TokenResponse, error) {
+	clientID := os.Getenv("GOOGLE_CLIENT_ID")
+	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	urlRedirect := os.Getenv("GOOGLE_REDIRECT_URL")
+
+	formData := url.Values{}
+	formData.Set("code", code)
+	formData.Set("client_id", clientID)
+	formData.Set("client_secret", clientSecret)
+	formData.Set("redirect_uri", urlRedirect)
+	formData.Set("grant_type", "authorization_code")
+
+	resp, err := http.PostForm("https://oauth2.googleapis.com/token", formData)
+	if err != nil {
+		return nil, fmt.Errorf("failed to send token request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("google token endpoint returned status %d: %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	var tokenResp TokenResponse
+	if err := json.NewDecoder(resp.Body).Decode(&tokenResp); err != nil {
+		return nil, fmt.Errorf("failed to decode token response: %w", err)
+	}
+
+	return &tokenResp, nil
+}
+
+// ConfirmGoogleID cryptographically verifies Google's JWT ID token and extracts user claims
+func ConfirmGoogleID(ctx context.Context, idTokenString string) (*idtoken.Payload, error) {
+	clientID := os.Getenv("GOOGLE_CLIENT_ID")
+
+	// Validates signature, audience (client ID), expiration, and issuer via Google's public keys
+	payload, err := idtoken.Validate(ctx, idTokenString, clientID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid google id token: %w", err)
+	}
+
+	return payload, nil
 }
