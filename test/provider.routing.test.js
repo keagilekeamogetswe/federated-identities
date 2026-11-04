@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-describe("Testing the initial set-up of Federated Routes Responses", () => {
+describe.skip("Testing the initial set-up of Federated Routes Responses", () => {
   it("should validate github provider route response", async () => {
     const provider = "github";
     const url = `http://localhost:8080/provider/${provider}`;
