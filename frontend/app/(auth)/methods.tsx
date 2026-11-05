@@ -22,9 +22,9 @@ export function MethodsUIComponent() {
             loading_request && current_loading_method.current === method.name;
 
           return (
-            <a
+            <button
               key={method.name}
-              href="#_" // Fallback href, prevented by onClick
+              name={method.name}
               onClick={async (e) => {
                 e.preventDefault(); // Stop native navigation so async fetch runs
                 if (loading_request) return;
@@ -83,7 +83,7 @@ export function MethodsUIComponent() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </a>
+            </button>
           );
         })}
       </div>
