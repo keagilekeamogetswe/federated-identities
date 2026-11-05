@@ -30,7 +30,12 @@ func GoogleRequestIdentityHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	authURL := services.RequestGoogleAuthURL(stateToken)
-	http.Redirect(w, r, authURL, http.StatusTemporaryRedirect)
+	// Return the authorization URL as a JSON payload instead of redirecting
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"url": authURL,
+	})
 }
 // GoogleConfirmIdentityHandler handles the callback from Google, validates the state,
 // exchanges the authorization code for tokens, and verifies the ID token.
