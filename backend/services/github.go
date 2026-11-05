@@ -47,8 +47,8 @@ func GenerateGitHubStateToken() (string, error) {
 
 // RequestGitHubAuthURL builds the GitHub OAuth consent screen redirect URL
 func RequestGitHubAuthURL(state string) string {
-	clientID := os.Getenv("GITHUB_CLIENT_ID")
-	urlRedirect := os.Getenv("GITHUB_REDIRECT_URL")
+	clientID := os.Getenv("CLIENT_ID_GITHUB")
+	urlRedirect := os.Getenv("REDIRECT_URL_GITHUB")
 
 	params := url.Values{}
 	params.Set("client_id", clientID)
@@ -62,8 +62,8 @@ func RequestGitHubAuthURL(state string) string {
 // ExchangeGitHubCode executes the back-channel POST request to exchange
 // the authorization code for an access token.
 func ExchangeGitHubCode(code string) (*GitHubTokenResponse, error) {
-	clientID := os.Getenv("GITHUB_CLIENT_ID")
-	clientSecret := os.Getenv("GITHUB_CLIENT_SECRET")
+	clientID := os.Getenv("CLIENT_ID_GITHUB")
+	clientSecret := os.Getenv("CLIENT_SECRET_GITHUB")
 
 	formData := url.Values{}
 	formData.Set("client_id", clientID)
