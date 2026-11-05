@@ -1,6 +1,6 @@
 export const APIInterfaceModule = (() => {
   function buildURL(provider: string, action: string): string {
-    const provider_url_base = `/api/provider/`;
+    const provider_url_base = `/api/provider`;
     return `${provider_url_base}/${provider}/${action}`;
   }
   return {
