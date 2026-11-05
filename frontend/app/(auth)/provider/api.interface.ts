@@ -6,7 +6,7 @@ export const APIInterfaceModule = (() => {
   return {
     async requestID(provider: string) {
       const url = buildURL(provider, "request");
-      const req = await fetch(url, { method: "GET" });
+      const req = await fetch(url, { method: "GET", credentials: "include" });
       if (!req.ok) return null;
       const data = await req.json();
       return data.url;
