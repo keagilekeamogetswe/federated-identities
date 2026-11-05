@@ -95,8 +95,4 @@ func ConfirmGoogleID(ctx context.Context, idTokenString string) (*idtoken.Payloa
 	}
 
 	return payload, nil
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 946fa1c742e86fd2f4e129262d6fa98d06a87a12
