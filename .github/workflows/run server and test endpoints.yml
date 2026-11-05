@@ -2,9 +2,9 @@ name: Go Backend Workflow
 
 on:
   push:
-    branches: [ "main", "test-ci" ]
+    branches: ["main", "test-ci"]
   pull_request:
-    branches: [ "main", "test-ci" ]
+    branches: ["main", "test-ci"]
 
 jobs:
   build-and-test:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment: secrets
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: "1.22"
 
       - name: Install Go Dependencies
         run: go mod download
@@ -32,7 +32,7 @@ jobs:
 
       - name: Run HTTP Server in Background
         run: |
-          ./main & 
+          ./main &
           SERVER_PID=$!
           sleep 3
         working-directory: ./backend
@@ -41,11 +41,13 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REDIRECT_URL: ${{ secrets.GOOGLE_REDIRECT_URL }}
           GOOGLE_CLIENT_NAME: ${{ secrets.GOOGLE_CLIENT_NAME }}
+          CLIENT_ID_GITHUB: ${{ secrets.CLIENT_ID_GITHUB }}
+          CLIENT_SECRET_GITHUB: ${{ secrets.CLIENT_SECRET_GITHUB }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Node Dependencies
         run: npm ci
