@@ -11,5 +11,16 @@ export const APIInterfaceModule = (() => {
       const data = await req.json();
       return data.url;
     },
+    async confirmID(provider: string, params: string) {
+      const url = buildURL(provider, "confirm");
+      const req = await fetch(url + params, {
+        method: "GET",
+        credentials: "include",
+      });
+      console.log(req);
+      if (!req.ok) return null;
+      const data = await req.json();
+      return data;
+    },
   };
 })();
